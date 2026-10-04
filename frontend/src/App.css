@@ -1,0 +1,365 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f9;
+    color: #1f2937;
+}
+
+.app {
+    min-height: 100vh;
+}
+
+/* ================= HEADER ================= */
+
+.header {
+    background: #111827;
+    color: white;
+    padding: 18px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+.tagline {
+    font-size: 14px;
+    color: #d1d5db;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    background: linear-gradient(135deg, #111827, #1f2937);
+    color: white;
+    text-align: center;
+    padding: 75px 20px 85px;
+}
+
+.hero h1 {
+    font-size: 46px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: #d1d5db;
+    font-size: 17px;
+    margin-bottom: 35px;
+}
+
+/* ================= SEARCH ================= */
+
+.search-box {
+    width: 90%;
+    max-width: 760px;
+    margin: auto;
+    display: flex;
+    background: white;
+    padding: 7px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 17px 18px;
+    font-size: 16px;
+    color: #111827;
+    border-radius: 10px;
+}
+
+.search-box input::placeholder {
+    color: #9ca3af;
+}
+
+.search-box button {
+    border: none;
+    padding: 0 28px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.search-box button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* ================= PRODUCTS ================= */
+
+.products {
+    width: 92%;
+    max-width: 1100px;
+    margin: 45px auto 70px;
+}
+
+/* ================= SUMMARY ================= */
+
+.comparison-summary {
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e5e7eb;
+}
+
+.comparison-summary h2 {
+    font-size: 27px;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.comparison-summary p {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+/* ================= PRODUCT CARD ================= */
+
+.product-card {
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e5e7eb;
+}
+
+.product-info {
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.product-info h2 {
+    font-size: 28px;
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    color: #6b7280;
+    margin-bottom: 7px;
+    font-size: 15px;
+}
+
+/* ================= PRICE ROW ================= */
+
+.price-list {
+    margin-top: 5px;
+}
+
+.price-row {
+    display: grid;
+    grid-template-columns: 1fr 180px 130px;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 15px;
+    border-bottom: 1px solid #edf0f3;
+    transition: 0.2s;
+}
+
+.price-row:last-child {
+    border-bottom: none;
+}
+
+.price-row:hover {
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.price-row strong {
+    font-size: 17px;
+    color: #374151;
+}
+
+.price {
+    font-size: 21px;
+    font-weight: 800;
+    color: #111827;
+}
+
+/* ================= LOWEST PRICE ================= */
+
+.lowest {
+    background: #ecfdf5;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    margin: 6px 0;
+}
+
+.lowest:hover {
+    background: #ecfdf5;
+}
+
+.lowest .price {
+    color: #15803d;
+}
+
+.lowest-badge {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px 9px;
+    background: #16a34a;
+    color: white;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    vertical-align: middle;
+}
+
+/* ================= BUY BUTTON ================= */
+
+.buy-button {
+    text-decoration: none;
+    background: #111827;
+    color: white;
+    padding: 11px 18px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.buy-button:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* ================= LOADING / EMPTY ================= */
+
+.products > h2 {
+    text-align: center;
+    background: white;
+    padding: 35px;
+    border-radius: 15px;
+    color: #6b7280;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+    background: #111827;
+    color: #9ca3af;
+    text-align: center;
+    padding: 25px;
+    font-size: 14px;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 800px) {
+
+    .header {
+        padding: 18px 5%;
+    }
+
+    .hero {
+        padding: 55px 15px 65px;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .products {
+        width: 94%;
+    }
+
+    .product-card {
+        padding: 20px;
+    }
+
+    .price-row {
+        grid-template-columns: 1fr 130px 110px;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        flex-direction: column;
+        gap: 7px;
+        text-align: center;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .search-box {
+        flex-direction: column;
+        background: transparent;
+        box-shadow: none;
+        gap: 10px;
+    }
+
+    .search-box input {
+        padding: 16px;
+        border-radius: 10px;
+    }
+
+    .search-box button {
+        padding: 15px;
+    }
+
+    .comparison-summary h2 {
+        font-size: 23px;
+    }
+
+    .product-info h2 {
+        font-size: 23px;
+    }
+
+    .price-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 18px 10px;
+    }
+
+    .price {
+        font-size: 20px;
+    }
+
+    .buy-button {
+        width: 100%;
+        display: block;
+    }
+
+    .lowest-badge {
+        margin-left: 5px;
+    }
+}

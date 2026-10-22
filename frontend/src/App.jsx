@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import "./App.css";
 
@@ -9,58 +8,32 @@ function App() {
     const [searched, setSearched] = useState(false);
     const [error, setError] = useState("");
 
-    // Local images for the 10 phone models.
     const getPhoneImage = (productName = "") => {
         const name = productName.toLowerCase();
 
-        if (name.includes("samsung galaxy s25 ultra"))
-            return "/images/samsung-galaxy-s25-ultra.jpg";
-
-        if (name.includes("samsung galaxy s25"))
-            return "/images/samsung-galaxy-s25.jpg";
-
-        if (name.includes("iphone 17"))
-            return "/images/iphone-17.jpg";
-
-        if (name.includes("iphone 16"))
-            return "/images/iphone-16.jpg";
-
-        if (name.includes("oneplus 13r"))
-            return "/images/oneplus-13r.jpg";
-
-        if (name.includes("oneplus 13"))
-            return "/images/oneplus-13.jpg";
-
-        if (
-            name.includes("google pixel 9") ||
-            name.includes("pixel 9")
-        )
-            return "/images/google-pixel-9.jpg";
-
-        if (name.includes("xiaomi 15"))
-            return "/images/xiaomi-15.jpg";
-
-        if (name.includes("vivo x200"))
-            return "/images/vivo-x200.jpg";
-
-        if (name.includes("nothing phone 3"))
-            return "/images/nothing-phone-3.jpg";
+        if (name.includes("samsung galaxy s25 ultra")) return "/images/samsung-galaxy-s25-ultra.jpg";
+        if (name.includes("samsung galaxy s25")) return "/images/samsung-galaxy-s25.jpg";
+        if (name.includes("iphone 17")) return "/images/iphone-17.jpg";
+        if (name.includes("iphone 16")) return "/images/iphone-16.jpg";
+        if (name.includes("oneplus 13r")) return "/images/oneplus-13r.jpg";
+        if (name.includes("oneplus 13")) return "/images/oneplus-13.jpg";
+        if (name.includes("google pixel 9") || name.includes("pixel 9")) return "/images/google-pixel-9.jpg";
+        if (name.includes("xiaomi 15")) return "/images/xiaomi-15.jpg";
+        if (name.includes("vivo x200")) return "/images/vivo-x200.jpg";
+        if (name.includes("nothing phone 3")) return "/images/nothing-phone-3.jpg";
 
         return "";
     };
 
     const getImageUrl = (product) => {
         return (
-            getPhoneImage(
-                product.product_name || product.name || ""
-            ) ||
+            getPhoneImage(product.product_name || product.name || "") ||
             product.image_url ||
             product.image ||
             ""
         );
     };
 
-    // Load products when the page opens.
     useEffect(() => {
         loadAllProducts();
     }, []);
@@ -70,9 +43,7 @@ function App() {
         setError("");
 
         try {
-            const response = await fetch(
-                "http://localhost:5000/api/products"
-            );
+            const response = await fetch("http://localhost:5000/api/products");
 
             if (!response.ok) {
                 throw new Error("Unable to load products.");
@@ -89,15 +60,12 @@ function App() {
         } catch (err) {
             console.error("Error loading products:", err);
             setProducts([]);
-            setError(
-                "Unable to connect to the server. Please make sure your backend is running."
-            );
+            setError("Unable to connect to the server. Please make sure your backend is running.");
         } finally {
             setLoading(false);
         }
     };
 
-    // Search smartphones.
     const handleSearch = async (query = search) => {
         if (!query.trim()) {
             setSearch("");
@@ -113,9 +81,7 @@ function App() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/api/compare?query=${encodeURIComponent(
-                    query.trim()
-                )}`
+                `http://localhost:5000/api/compare?query=${encodeURIComponent(query.trim())}`
             );
 
             if (!response.ok) {
@@ -145,13 +111,8 @@ function App() {
         }
     };
 
-    // Format prices in Indian rupees.
     const formatPrice = (price) => {
-        if (
-            price === null ||
-            price === undefined ||
-            price === ""
-        ) {
+        if (price === null || price === undefined || price === "") {
             return "Price unavailable";
         }
 
@@ -173,7 +134,28 @@ function App() {
     };
 
     const getRetailers = (product) => {
-        return product.retailers || product.stores || [];
+        if (Array.isArray(product.retailers)) {
+            return product.retailers;
+        }
+
+        if (Array.isArray(product.stores)) {
+            return product.stores;
+        }
+
+        if (Array.isArray(product.variants)) {
+            return product.variants.flatMap((variant) =>
+                Array.isArray(variant.prices)
+                    ? variant.prices.map((price) => ({
+                        ...price,
+                        retailer_name: price.platform || price.retailer_name || price.store_name || price.name,
+                        price: price.price ?? price.selling_price ?? price.current_price,
+                        product_url: price.product_url || price.url || price.link || price.buy_link
+                    }))
+                    : []
+            );
+        }
+
+        return [];
     };
 
     const getRetailerName = (retailer) => {
@@ -196,45 +178,65 @@ function App() {
     };
 
     const getRetailerLink = (retailer) => {
-    const value =
-        retailer.product_url ||
-        retailer.url ||
-        retailer.link ||
-        retailer.buy_link ||
-        "";
+        const value =
+            retailer.product_url ||
+            retailer.url ||
+            retailer.link ||
+            retailer.buy_link ||
+            "";
 
-    if (!value) return "";
+        const retailerName = getRetailerName(retailer).toLowerCase();
 
-    try {
-        const url = new URL(value);
-        const host = url.hostname.toLowerCase();
+        const storeHomepages = {
+            amazon: "https://www.amazon.in/",
+            flipkart: "https://www.flipkart.com/",
+            croma: "https://www.croma.com/",
+            "vijay sales": "https://www.vijaysales.com/"
+        };
 
-        const allowedDomains = [
-            "amazon.in",
-            "amzn.in",
-            "flipkart.com",
-            "croma.com",
-            "vijaysales.com"
-        ];
+        const getHomepage = () => {
+            const store = Object.keys(storeHomepages).find((name) =>
+                retailerName.includes(name)
+            );
 
-        const isAllowed = allowedDomains.some(
-            (domain) =>
-                host === domain || host.endsWith("." + domain)
-        );
+            return store ? storeHomepages[store] : "";
+        };
 
-        if (
-            url.protocol !== "https:" ||
-            !isAllowed ||
-            url.pathname === "/"
-        ) {
-            return "";
+        if (!value) {
+            return getHomepage();
         }
 
-        return url.href;
-    } catch {
-        return "";
-    }
-};
+        try {
+            const url = new URL(value);
+            const host = url.hostname.toLowerCase();
+
+            const allowedDomains = [
+                "amazon.in",
+                "amzn.in",
+                "flipkart.com",
+                "croma.com",
+                "vijaysales.com"
+            ];
+
+            const isAllowed = allowedDomains.some(
+                (domain) =>
+                    host === domain || host.endsWith("." + domain)
+            );
+
+            if (url.protocol !== "https:" || !isAllowed) {
+                return getHomepage();
+            }
+
+            if (url.pathname === "/" && !url.search && !url.hash) {
+                return getHomepage() || url.href;
+            }
+
+            return url.href;
+        } catch {
+            return getHomepage();
+        }
+    };
+
     const getStartingPrice = (product) => {
         return (
             product.min_price ??
@@ -246,7 +248,6 @@ function App() {
 
     return (
         <div className="app">
-            {/* Header */}
             <header className="header">
                 <div className="header-content">
                     <a
@@ -262,29 +263,20 @@ function App() {
                         <span>🛍️ Smart Khareedi</span>
                     </a>
 
-                    <p className="tagline">
-                        Compare prices. Shop smarter.
-                    </p>
+                    <p className="tagline">Compare prices. Shop smarter.</p>
                 </div>
             </header>
 
-            {/* Search area */}
             <section className="hero">
                 <div className="hero-content">
                     <h1>Find the Best Deal on Your Next Phone</h1>
-
-                    <p>
-                        Compare smartphone prices and find the best
-                        deal for your budget.
-                    </p>
+                    <p>Compare smartphone prices and find the best deal for your budget.</p>
 
                     <div className="search-box">
                         <input
                             type="text"
                             value={search}
-                            onChange={(event) =>
-                                setSearch(event.target.value)
-                            }
+                            onChange={(event) => setSearch(event.target.value)}
                             onKeyDown={handleKeyDown}
                             placeholder="Search for a smartphone..."
                             aria-label="Search smartphones"
@@ -301,15 +293,10 @@ function App() {
                 </div>
             </section>
 
-            {/* Products */}
             <main className="results-section">
                 <div className="container">
                     <div className="results-header">
-                        <h2>
-                            {searched
-                                ? "Search Results"
-                                : "All Smartphones"}
-                        </h2>
+                        <h2>{searched ? "Search Results" : "All Smartphones"}</h2>
 
                         <p>
                             {searched
@@ -341,9 +328,7 @@ function App() {
                     </div>
 
                     {loading && (
-                        <div className="status-message">
-                            Loading smartphones...
-                        </div>
+                        <div className="status-message">Loading smartphones...</div>
                     )}
 
                     {!loading && error && (
@@ -366,54 +351,30 @@ function App() {
                         </div>
                     )}
 
-                    {!loading &&
-                        !error &&
-                        products.length === 0 && (
-                            <div className="status-message">
-                                No smartphones found. Try another
-                                search.
-                            </div>
-                        )}
+                    {!loading && !error && products.length === 0 && (
+                        <div className="status-message">
+                            No smartphones found. Try another search.
+                        </div>
+                    )}
 
                     {!loading && products.length > 0 && (
                         <div className="products-container">
                             {products.map((product, index) => {
-                                const productName =
-                                    getProductName(product);
-
-                                const retailers =
-                                    getRetailers(product);
-
-                                const imageUrl =
-                                    getImageUrl(product);
+                                const productName = getProductName(product);
+                                const retailers = getRetailers(product);
+                                const imageUrl = getImageUrl(product);
 
                                 const prices = retailers
-                                    .map((retailer) =>
-                                        Number(
-                                            getRetailerPrice(retailer)
-                                        )
-                                    )
-                                    .filter(
-                                        (price) =>
-                                            Number.isFinite(price) &&
-                                            price > 0
-                                    );
+                                    .map((retailer) => Number(getRetailerPrice(retailer)))
+                                    .filter((price) => Number.isFinite(price) && price > 0);
 
-                                const lowestPrice =
-                                    prices.length > 0
-                                        ? Math.min(...prices)
-                                        : null;
+                                const lowestPrice = prices.length > 0 ? Math.min(...prices) : null;
 
                                 return (
                                     <article
                                         className="product-card"
-                                        key={
-                                            product.product_id ||
-                                            product.id ||
-                                            `${productName}-${index}`
-                                        }
+                                        key={product.product_id || product.id || `${productName}-${index}`}
                                     >
-                                        {/* Phone image and details */}
                                         <div className="product-info">
                                             <div className="product-image">
                                                 {imageUrl && (
@@ -422,21 +383,14 @@ function App() {
                                                         alt={productName}
                                                         loading="lazy"
                                                         onError={(event) => {
-                                                            const img =
-                                                                event.currentTarget;
-
+                                                            const img = event.currentTarget;
                                                             img.onerror = null;
-                                                            img.style.display =
-                                                                "none";
+                                                            img.style.display = "none";
 
-                                                            const fallback =
-                                                                img.parentElement.querySelector(
-                                                                    ".image-fallback"
-                                                                );
+                                                            const fallback = img.parentElement.querySelector(".image-fallback");
 
                                                             if (fallback) {
-                                                                fallback.style.display =
-                                                                    "flex";
+                                                                fallback.style.display = "flex";
                                                             }
                                                         }}
                                                     />
@@ -444,148 +398,88 @@ function App() {
 
                                                 <div
                                                     className="image-fallback"
-                                                    style={{
-                                                        display: imageUrl
-                                                            ? "none"
-                                                            : "flex"
-                                                    }}
+                                                    style={{ display: imageUrl ? "none" : "flex" }}
                                                 >
                                                     <span>📱</span>
-                                                    <strong>
-                                                        {productName}
-                                                    </strong>
-                                                    <small>
-                                                        Image unavailable
-                                                    </small>
+                                                    <strong>{productName}</strong>
+                                                    <small>Image unavailable</small>
                                                 </div>
                                             </div>
 
                                             <div className="product-details">
                                                 {product.brand && (
-                                                    <span className="brand">
-                                                        {product.brand}
-                                                    </span>
+                                                    <span className="brand">{product.brand}</span>
                                                 )}
 
                                                 <h3>{productName}</h3>
 
-                                                {product.description && (
-                                                    <p>
-                                                        {product.description}
-                                                    </p>
-                                                )}
+                                                {product.description && <p>{product.description}</p>}
 
                                                 {lowestPrice !== null && (
                                                     <p>
-                                                        <strong>
-                                                            Lowest Price:{" "}
-                                                        </strong>
-                                                        {formatPrice(
-                                                            lowestPrice
-                                                        )}
+                                                        <strong>Lowest Price: </strong>
+                                                        {formatPrice(lowestPrice)}
                                                     </p>
                                                 )}
                                             </div>
                                         </div>
 
-                                        {/* Retailer prices — storage variants removed */}
                                         <div className="variant-section">
                                             <div className="variant-title">
-                                                <span>
-                                                    Compare Retailers
-                                                </span>
+                                                <span>Compare Retailers</span>
                                             </div>
 
                                             <div className="price-list">
                                                 {retailers.length > 0 ? (
-                                                    retailers.map(
-                                                        (
-                                                            retailer,
-                                                            retailerIndex
-                                                        ) => {
-                                                            const price =
-                                                                getRetailerPrice(
-                                                                    retailer
-                                                                );
+                                                    retailers.map((retailer, retailerIndex) => {
+                                                        const price = getRetailerPrice(retailer);
+                                                        const numericPrice = Number(price);
 
-                                                            const numericPrice =
-                                                                Number(price);
+                                                        const isLowest =
+                                                            lowestPrice !== null &&
+                                                            Number.isFinite(numericPrice) &&
+                                                            numericPrice === lowestPrice;
 
-                                                            const isLowest =
-                                                                lowestPrice !==
-                                                                    null &&
-                                                                Number.isFinite(
-                                                                    numericPrice
-                                                                ) &&
-                                                                numericPrice ===
-                                                                    lowestPrice;
+                                                        const retailerLink = getRetailerLink(retailer);
 
-                                                            const retailerLink =
-                                                                getRetailerLink(
-                                                                    retailer
-                                                                );
+                                                        return (
+                                                            <div
+                                                                className={`price-row ${isLowest ? "lowest" : ""}`}
+                                                                key={retailer.retailer_id || retailer.id || retailerIndex}
+                                                            >
+                                                                <div className="platform-info">
+                                                                    <strong>{getRetailerName(retailer)}</strong>
 
-                                                            return (
-                                                                <div
-                                                                    className={`price-row ${
-                                                                        isLowest
-                                                                            ? "lowest"
-                                                                            : ""
-                                                                    }`}
-                                                                    key={
-                                                                        retailer.retailer_id ||
-                                                                        retailer.id ||
-                                                                        retailerIndex
-                                                                    }
-                                                                >
-                                                                    <div className="platform-info">
-                                                                        <strong>
-                                                                            {getRetailerName(
-                                                                                retailer
-                                                                            )}
-                                                                        </strong>
-
-                                                                        {isLowest && (
-                                                                            <span className="lowest-badge">
-                                                                                LOWEST PRICE
-                                                                            </span>
-                                                                        )}
-                                                                    </div>
-
-                                                                    <div className="price-info">
-                                                                        <span className="price">
-                                                                            {formatPrice(
-                                                                                price
-                                                                            )}
+                                                                    {isLowest && (
+                                                                        <span className="lowest-badge">
+                                                                            LOWEST PRICE
                                                                         </span>
-
-                                                                        {retailerLink ? (
-                                                                            <a
-                                                                                className="buy-button"
-                                                                                href={
-                                                                                    retailerLink
-                                                                                }
-                                                                                target="_blank"
-                                                                                rel="noopener noreferrer"
-                                                                            >
-                                                                                Buy Now
-                                                                            </a>
-                                                                        ) : (
-                                                                            <span className="unavailable-button">
-                                                                                Link unavailable
-                                                                            </span>
-                                                                        )}
-                                                                    </div>
+                                                                    )}
                                                                 </div>
-                                                            );
-                                                        }
-                                                    )
+
+                                                                <div className="price-info">
+                                                                    <span className="price">{formatPrice(price)}</span>
+
+                                                                    {retailerLink ? (
+                                                                        <a
+                                                                            className="buy-button"
+                                                                            href={retailerLink}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                        >
+                                                                            Buy Now
+                                                                        </a>
+                                                                    ) : (
+                                                                        <span className="unavailable-button">
+                                                                            Link unavailable
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })
                                                 ) : (
-                                                    <p>
-                                                        No retailer prices
-                                                        available for this
-                                                        product.
-                                                    </p>
+                                                    <p>No retailer prices available for this product.</p>
                                                 )}
                                             </div>
                                         </div>
@@ -597,11 +491,9 @@ function App() {
                 </div>
             </main>
 
-            {/* Footer */}
             <footer className="footer">
                 <p>
-                    © {new Date().getFullYear()} Smart Khareedi.
-                    Compare prices. Shop smarter.
+                    © {new Date().getFullYear()} Smart Khareedi. Compare prices. Shop smarter.
                 </p>
             </footer>
         </div>
@@ -609,4 +501,3 @@ function App() {
 }
 
 export default App;
-

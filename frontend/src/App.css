@@ -1,3 +1,6 @@
+
+/* ================= GLOBAL ================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -12,8 +15,29 @@ body {
     background-size: 180px 180px;
 }
 
+button,
+input {
+    font-family: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
 .app {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ================= CONTAINER ================= */
+
+.container {
+    width: 92%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* ================= HEADER ================= */
@@ -22,17 +46,14 @@ body {
     background: #1565c0;
     color: white;
     padding: 18px 7%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
 }
 
 .header-content {
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .logo {
@@ -57,7 +78,7 @@ body {
     background: linear-gradient(135deg, #1976d2, #64b5f6);
     color: white;
     text-align: center;
-    padding: 75px 20px 85px;
+    padding: 65px 20px 75px;
 }
 
 .hero-content {
@@ -65,15 +86,17 @@ body {
 }
 
 .hero h1 {
-    font-size: 46px;
+    font-size: 42px;
     font-weight: 800;
+    line-height: 1.25;
     margin-bottom: 15px;
 }
 
 .hero p {
-    color: #d1d5db;
-    font-size: 17px;
-    margin-bottom: 35px;
+    color: #f0f7ff;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
 }
 
 /* ================= SEARCH ================= */
@@ -91,6 +114,7 @@ body {
 
 .search-box input {
     flex: 1;
+    min-width: 0;
     border: none;
     outline: none;
     padding: 17px 18px;
@@ -112,7 +136,7 @@ body {
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background 0.2s, transform 0.2s;
 }
 
 .search-box button:hover {
@@ -124,12 +148,11 @@ body {
 
 .results-section {
     width: 100%;
-    padding: 45px 0 70px;
+    padding: 38px 0 65px;
+    flex: 1;
 }
 
 .results-header {
-    width: 92%;
-    max-width: 1100px;
     margin: 0 auto 25px;
 }
 
@@ -144,10 +167,9 @@ body {
     font-size: 15px;
 }
 
+/* ================= PRODUCT LIST ================= */
+
 .products-container {
-    width: 92%;
-    max-width: 1100px;
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -158,11 +180,18 @@ body {
 .product-card {
     background: white;
     border-radius: 18px;
-    padding: 30px;
+    padding: 24px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
     border: 1px solid #e5e7eb;
     overflow: hidden;
+    transition: box-shadow 0.2s;
 }
+
+.product-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* ================= PRODUCT INFORMATION ================= */
 
 .product-info {
     display: flex;
@@ -175,76 +204,116 @@ body {
 /* ================= PRODUCT IMAGE ================= */
 
 .product-image {
-    width: 110px;
-    height: 130px;
+    position: relative;
+    width: 210px;
+    height: 225px;
     flex-shrink: 0;
-    background: #f1f5f9;
-    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #edf0f3;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding: 12px;
 }
 
 .product-image img {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
+    max-width: 100%;
     object-fit: contain;
+    display: block;
+    transition: transform 0.3s ease;
 }
 
-.phone-placeholder {
-    font-size: 50px;
+.product-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Fallback shown when the image URL is missing or broken */
+
+.image-fallback {
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px;
+    text-align: center;
+    color: #64748b;
+    background: #f8fafc;
+}
+
+.image-fallback span {
+    font-size: 18px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.image-fallback small {
+    font-size: 12px;
 }
 
 /* ================= PRODUCT DETAILS ================= */
 
 .product-details {
     flex: 1;
+    min-width: 0;
 }
 
 .brand {
     display: block;
     color: #2563eb;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .product-details h3 {
-    font-size: 28px;
+    font-size: 27px;
+    line-height: 1.3;
     color: #111827;
     margin-bottom: 10px;
+    overflow-wrap: anywhere;
 }
 
 .product-details p {
     color: #6b7280;
     margin-bottom: 7px;
     font-size: 15px;
+    line-height: 1.6;
 }
 
-/* ================= VARIANT ================= */
+/* ================= VARIANT / LOWEST PRICE ================= */
 
 .variant-section {
     margin-top: 20px;
 }
 
+/* Hide variant names such as 256GB / 12GB / Black */
+
 .variant-title {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 20px;
-    padding: 5px 15px 15px;
+    padding: 5px 12px 15px;
     border-bottom: 1px solid #e5e7eb;
 }
 
 .variant-title strong {
-    font-size: 17px;
-    color: #111827;
+    display: none;
 }
 
 .variant-title span {
     color: #15803d;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
 }
 
@@ -262,9 +331,9 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    padding: 16px 15px;
+    padding: 16px 12px;
     border-bottom: 1px solid #edf0f3;
-    transition: 0.2s;
+    transition: background 0.2s;
 }
 
 .price-row:last-child {
@@ -283,27 +352,28 @@ body {
     min-width: 0;
     display: flex;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .platform-info strong {
-    font-size: 17px;
+    font-size: 16px;
     color: #374151;
     white-space: nowrap;
 }
 
-/* ================= PRICE + BUY ================= */
+/* ================= PRICE INFORMATION ================= */
 
 .price-info {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 20px;
+    gap: 16px;
     flex-shrink: 0;
 }
 
 .price {
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 800;
     color: #111827;
     white-space: nowrap;
@@ -349,13 +419,13 @@ body {
     text-decoration: none;
     background: #111827;
     color: white;
-    padding: 0 18px;
+    padding: 0 16px;
     border-radius: 8px;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     white-space: nowrap;
-    transition: 0.2s;
+    transition: background 0.2s, transform 0.2s;
 }
 
 .buy-button:hover {
@@ -363,18 +433,50 @@ body {
     transform: translateY(-1px);
 }
 
-/* ================= LOADING / EMPTY ================= */
+.unavailable-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: #e5e7eb;
+    color: #4b5563;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* ================= STATUS MESSAGES ================= */
 
 .status-message {
-    width: 92%;
-    max-width: 1100px;
-    margin: 45px auto 70px;
+    width: 100%;
+    margin: 35px auto;
     text-align: center;
     background: white;
-    padding: 35px;
+    padding: 35px 20px;
     border-radius: 15px;
     color: #6b7280;
+    line-height: 1.7;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.error-message {
+    color: #b91c1c;
+}
+
+.retry-button {
+    margin-top: 15px;
+    padding: 11px 22px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.retry-button:hover {
+    background: #1d4ed8;
 }
 
 /* ================= FOOTER ================= */
@@ -386,17 +488,18 @@ footer {
     text-align: center;
     padding: 25px;
     font-size: 14px;
+    margin-top: auto;
 }
 
 .footer p,
 footer p {
     margin: 0;
+    line-height: 1.6;
 }
 
 /* ================= TABLET ================= */
 
 @media (max-width: 800px) {
-
     .header {
         padding: 18px 5%;
     }
@@ -413,8 +516,7 @@ footer p {
         font-size: 15px;
     }
 
-    .products-container,
-    .results-header {
+    .container {
         width: 94%;
     }
 
@@ -423,7 +525,12 @@ footer p {
     }
 
     .product-info {
-        gap: 18px;
+        gap: 20px;
+    }
+
+    .product-image {
+        width: 180px;
+        height: 205px;
     }
 
     .product-details h3 {
@@ -431,26 +538,34 @@ footer p {
     }
 
     .price-row {
-        gap: 15px;
-    }
-
-    .price-info {
         gap: 12px;
     }
 
+    .price-info {
+        gap: 10px;
+    }
+
     .price {
-        font-size: 19px;
+        font-size: 18px;
     }
 
     .buy-button {
-        min-width: 90px;
+        min-width: 88px;
+        padding: 0 10px;
+    }
+
+    .platform-info {
+        gap: 8px;
+    }
+
+    .platform-info strong {
+        font-size: 15px;
     }
 }
 
 /* ================= MOBILE ================= */
 
 @media (max-width: 600px) {
-
     .header {
         padding: 18px 5%;
     }
@@ -465,8 +580,18 @@ footer p {
         font-size: 25px;
     }
 
+    .hero {
+        padding: 45px 15px 50px;
+    }
+
     .hero h1 {
         font-size: 30px;
+        line-height: 1.3;
+    }
+
+    .hero p {
+        font-size: 14px;
+        margin-bottom: 25px;
     }
 
     .search-box {
@@ -474,51 +599,84 @@ footer p {
         background: transparent;
         box-shadow: none;
         gap: 10px;
+        width: 100%;
+        padding: 0;
     }
 
     .search-box input {
+        width: 100%;
         padding: 16px;
         border-radius: 10px;
+        background: white;
     }
 
     .search-box button {
+        min-height: 48px;
+        padding: 14px;
+    }
+
+    .results-section {
+        padding: 30px 0 45px;
+    }
+
+    .results-header h2 {
+        font-size: 23px;
+    }
+
+    .product-card {
         padding: 15px;
+        border-radius: 14px;
     }
 
     .product-info {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 18px;
+        padding-bottom: 20px;
     }
 
     .product-image {
         width: 100%;
-        height: 180px;
+        height: 230px;
+    }
+
+    .product-image img {
+        max-width: 230px;
     }
 
     .product-details h3 {
         font-size: 23px;
     }
 
+    .product-details p {
+        font-size: 14px;
+    }
+
     .variant-title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+        justify-content: flex-start;
+        padding: 5px 5px 12px;
+    }
+
+    .variant-title span {
+        font-size: 14px;
     }
 
     .price-row {
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
-        padding: 18px 10px;
+        padding: 18px 8px;
     }
 
     .platform-info {
         width: 100%;
+        justify-content: flex-start;
     }
 
     .price-info {
         width: 100%;
         justify-content: space-between;
+        gap: 10px;
     }
 
     .price {
@@ -532,4 +690,44 @@ footer p {
     .lowest-badge {
         margin-left: 5px;
     }
+
+    .status-message {
+        padding: 25px 18px;
+    }
 }
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 360px) {
+    .product-card {
+        padding: 12px;
+    }
+
+    .product-image {
+        height: 200px;
+    }
+
+    .product-details h3 {
+        font-size: 20px;
+    }
+
+    .price-info {
+        flex-wrap: wrap;
+    }
+
+    .price {
+        font-size: 18px;
+    }
+
+    .buy-button {
+        min-width: 90px;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .lowest-badge {
+        font-size: 9px;
+        padding: 4px 6px;
+    }
+}
+

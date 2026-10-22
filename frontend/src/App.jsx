@@ -1,4 +1,4 @@
-jsx
+
 import { useEffect, useState } from "react";
 import "./App.css";
 
@@ -9,11 +9,62 @@ function App() {
     const [searched, setSearched] = useState(false);
     const [error, setError] = useState("");
 
+    // Local images for the 10 phone models.
+    const getPhoneImage = (productName = "") => {
+        const name = productName.toLowerCase();
+
+        if (name.includes("samsung galaxy s25 ultra"))
+            return "/images/samsung-galaxy-s25-ultra.jpg";
+
+        if (name.includes("samsung galaxy s25"))
+            return "/images/samsung-galaxy-s25.jpg";
+
+        if (name.includes("iphone 17"))
+            return "/images/iphone-17.jpg";
+
+        if (name.includes("iphone 16"))
+            return "/images/iphone-16.jpg";
+
+        if (name.includes("oneplus 13r"))
+            return "/images/oneplus-13r.jpg";
+
+        if (name.includes("oneplus 13"))
+            return "/images/oneplus-13.jpg";
+
+        if (
+            name.includes("google pixel 9") ||
+            name.includes("pixel 9")
+        )
+            return "/images/google-pixel-9.jpg";
+
+        if (name.includes("xiaomi 15"))
+            return "/images/xiaomi-15.jpg";
+
+        if (name.includes("vivo x200"))
+            return "/images/vivo-x200.jpg";
+
+        if (name.includes("nothing phone 3"))
+            return "/images/nothing-phone-3.jpg";
+
+        return "";
+    };
+
+    const getImageUrl = (product) => {
+        return (
+            getPhoneImage(
+                product.product_name || product.name || ""
+            ) ||
+            product.image_url ||
+            product.image ||
+            ""
+        );
+    };
+
+    // Load products when the page opens.
     useEffect(() => {
         loadAllProducts();
     }, []);
 
-    // Load all smartphones
     const loadAllProducts = async () => {
         setLoading(true);
         setError("");
@@ -46,22 +97,24 @@ function App() {
         }
     };
 
-    // Search smartphones
-    const handleSearch = async () => {
-        if (!search.trim()) {
+    // Search smartphones.
+    const handleSearch = async (query = search) => {
+        if (!query.trim()) {
+            setSearch("");
             setSearched(false);
-            loadAllProducts();
+            await loadAllProducts();
             return;
         }
 
-        setLoading(true);
+        setSearch(query);
         setSearched(true);
+        setLoading(true);
         setError("");
 
         try {
             const response = await fetch(
                 `http://localhost:5000/api/compare?query=${encodeURIComponent(
-                    search.trim()
+                    query.trim()
                 )}`
             );
 
@@ -86,23 +139,26 @@ function App() {
         }
     };
 
-    // Search when Enter is pressed
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
             handleSearch();
         }
     };
 
-    // Format prices in Indian rupees
+    // Format prices in Indian rupees.
     const formatPrice = (price) => {
-        if (price === null || price === undefined || price === "") {
-            return "Not Available";
+        if (
+            price === null ||
+            price === undefined ||
+            price === ""
+        ) {
+            return "Price unavailable";
         }
 
         const numericPrice = Number(price);
 
         if (!Number.isFinite(numericPrice)) {
-            return "Not Available";
+            return "Price unavailable";
         }
 
         return new Intl.NumberFormat("en-IN", {
@@ -112,354 +168,445 @@ function App() {
         }).format(numericPrice);
     };
 
-    // Handle missing or broken product images
-    const handleImageError = (event) => {
-        const image = event.currentTarget;
+    const getProductName = (product) => {
+        return product.product_name || product.name || "Smartphone";
+    };
 
-        // Prevent an endless image-error loop
-        image.onerror = null;
-        image.style.display = "none";
+    const getRetailers = (product) => {
+        return product.retailers || product.stores || [];
+    };
 
-        const fallback = image.nextElementSibling;
+    const getRetailerName = (retailer) => {
+        return (
+            retailer.retailer_name ||
+            retailer.platform ||
+            retailer.store_name ||
+            retailer.name ||
+            "Online Store"
+        );
+    };
 
-        if (fallback) {
-            fallback.style.display = "flex";
+    const getRetailerPrice = (retailer) => {
+        return (
+            retailer.price ??
+            retailer.selling_price ??
+            retailer.current_price ??
+            null
+        );
+    };
+
+    const getRetailerLink = (retailer) => {
+    const value =
+        retailer.product_url ||
+        retailer.url ||
+        retailer.link ||
+        retailer.buy_link ||
+        "";
+
+    if (!value) return "";
+
+    try {
+        const url = new URL(value);
+        const host = url.hostname.toLowerCase();
+
+        const allowedDomains = [
+            "amazon.in",
+            "amzn.in",
+            "flipkart.com",
+            "croma.com",
+            "vijaysales.com"
+        ];
+
+        const isAllowed = allowedDomains.some(
+            (domain) =>
+                host === domain || host.endsWith("." + domain)
+        );
+
+        if (
+            url.protocol !== "https:" ||
+            !isAllowed ||
+            url.pathname === "/"
+        ) {
+            return "";
         }
+
+        return url.href;
+    } catch {
+        return "";
+    }
+};
+    const getStartingPrice = (product) => {
+        return (
+            product.min_price ??
+            product.lowest_price ??
+            product.price ??
+            null
+        );
     };
 
     return (
         <div className="app">
-
-            {/* HEADER */}
+            {/* Header */}
             <header className="header">
-                <div className="container header-content">
+                <div className="header-content">
+                    <a
+                        href="/"
+                        className="logo"
+                        onClick={(event) => {
+                            event.preventDefault();
+                            setSearch("");
+                            setSearched(false);
+                            loadAllProducts();
+                        }}
+                    >
+                        <span>🛍️ Smart Khareedi</span>
+                    </a>
 
-                    <div className="logo">
-                        <span>Smart</span> Khareedi
-                    </div>
-
-                    <div className="header-tagline">
-                        Compare. Save. Shop Smart.
-                    </div>
-
+                    <p className="tagline">
+                        Compare prices. Shop smarter.
+                    </p>
                 </div>
             </header>
 
-            <main>
-
-                {/* HERO SECTION */}
-                <section className="hero">
-                    <div className="container hero-content">
-
-                        <h1>Find the Best Smartphone Price</h1>
-
-                        <p>
-                            Compare smartphone prices across Amazon,
-                            Flipkart, Vijay Sales and Croma.
-                        </p>
-
-                        <div className="search-box">
-
-                            <input
-                                type="text"
-                                placeholder="Search smartphone e.g. Samsung, iPhone, OnePlus..."
-                                value={search}
-                                onChange={(event) =>
-                                    setSearch(event.target.value)
-                                }
-                                onKeyDown={handleKeyDown}
-                                aria-label="Search smartphones"
-                            />
-
-                            <button
-                                type="button"
-                                onClick={handleSearch}
-                            >
-                                Search
-                            </button>
-
-                        </div>
-
-                    </div>
-                </section>
-
-                {/* RESULTS SECTION */}
-                <section className="results-section">
-                    <div className="container">
-
-                        {/* Loading */}
-                        {loading && (
-                            <div className="status-message">
-                                Loading smartphones...
-                            </div>
-                        )}
-
-                        {/* Server error */}
-                        {!loading && error && (
-                            <div className="status-message error-message">
-                                <p>{error}</p>
-
-                                <button
-                                    type="button"
-                                    className="retry-button"
-                                    onClick={
-                                        searched
-                                            ? handleSearch
-                                            : loadAllProducts
-                                    }
-                                >
-                                    Try Again
-                                </button>
-                            </div>
-                        )}
-
-                        {/* No products found */}
-                        {!loading &&
-                            !error &&
-                            products.length === 0 && (
-                                <div className="status-message">
-                                    {searched
-                                        ? "No smartphones found. Try another search."
-                                        : "No smartphones are available right now."}
-                                </div>
-                            )}
-
-                        {/* Product results */}
-                        {!loading &&
-                            !error &&
-                            products.length > 0 && (
-                                <>
-
-                                    <div className="results-header">
-
-                                        <h2>
-                                            {searched
-                                                ? "Search Results"
-                                                : "All Smartphones"}
-                                        </h2>
-
-                                        <p>
-                                            {products.length} smartphone
-                                            {products.length !== 1
-                                                ? "s"
-                                                : ""}{" "}
-                                            found
-                                        </p>
-
-                                    </div>
-
-                                    <div className="products-container">
-
-                                        {products.map((product, index) => (
-
-                                            <article
-                                                className="product-card"
-                                                key={
-                                                    product.product_id ??
-                                                    product.id ??
-                                                    index
-                                                }
-                                            >
-
-                                                {/* PRODUCT INFORMATION */}
-                                                <div className="product-info">
-
-                                                    {/* PRODUCT IMAGE */}
-                                                    <div className="product-image">
-
-                                                        {product.image_url && (
-                                                            <img
-                                                                src={product.image_url}
-                                                                alt={
-                                                                    product.product_name ||
-                                                                    "Smartphone"
-                                                                }
-                                                                loading="lazy"
-                                                                onError={
-                                                                    handleImageError
-                                                                }
-                                                            />
-                                                        )}
-
-                                                        {/* Displayed if image URL is missing or broken */}
-                                                        <div
-                                                            className="image-fallback"
-                                                            style={{
-                                                                display: product.image_url
-                                                                    ? "none"
-                                                                    : "flex"
-                                                            }}
-                                                        >
-                                                            <span>
-                                                                {product.brand ||
-                                                                    "Smartphone"}
-                                                            </span>
-
-                                                            <small>
-                                                                Image unavailable
-                                                            </small>
-                                                        </div>
-
-                                                    </div>
-
-                                                    {/* PRODUCT DETAILS */}
-                                                    <div className="product-details">
-
-                                                        {product.brand && (
-                                                            <span className="brand">
-                                                                {product.brand}
-                                                            </span>
-                                                        )}
-
-                                                        <h3>
-                                                            {product.product_name}
-                                                        </h3>
-
-                                                        {product.description && (
-                                                            <p>
-                                                                {product.description}
-                                                            </p>
-                                                        )}
-
-                                                    </div>
-
-                                                </div>
-
-                                                {/* VARIANTS AND PRICES */}
-                                                {product.variants.map(
-                                                    (variant, variantIndex) => (
-
-                                                        <div
-                                                            className="variant-section"
-                                                            key={
-                                                                variant.variant_id ??
-                                                                variantIndex
-                                                            }
-                                                        >
-
-                                                            {/* Variant name is hidden, lowest price remains visible */}
-                                                            <div className="variant-title">
-
-                                                                <strong>
-                                                                    {variant.variant_name}
-                                                                </strong>
-
-                                                                <span>
-                                                                    Lowest:{" "}
-                                                                    {variant.lowest_price !==
-                                                                        null &&
-                                                                    variant.lowest_price !==
-                                                                        undefined
-                                                                        ? formatPrice(
-                                                                            variant.lowest_price
-                                                                        )
-                                                                        : "Not Available"}
-                                                                </span>
-
-                                                            </div>
-
-                                                            <div className="price-list">
-
-                                                                {(variant.prices || []).map(
-                                                                    (
-                                                                        price,
-                                                                        priceIndex
-                                                                    ) => (
-
-                                                                        <div
-                                                                            className={
-                                                                                price.lowest_price
-                                                                                    ? "price-row lowest"
-                                                                                    : "price-row"
-                                                                            }
-                                                                            key={
-                                                                                price.platform_id ??
-                                                                                priceIndex
-                                                                            }
-                                                                        >
-
-                                                                            {/* STORE NAME */}
-                                                                            <div className="platform-info">
-
-                                                                                <strong>
-                                                                                    {price.platform}
-                                                                                </strong>
-
-                                                                                {price.lowest_price && (
-                                                                                    <span className="lowest-badge">
-                                                                                        LOWEST PRICE
-                                                                                    </span>
-                                                                                )}
-
-                                                                            </div>
-
-                                                                            {/* PRICE AND BUY BUTTON */}
-                                                                            <div className="price-info">
-
-                                                                                <strong className="price">
-                                                                                    {formatPrice(
-                                                                                        price.price
-                                                                                    )}
-                                                                                </strong>
-
-                                                                                {price.product_url ? (
-                                                                                    <a
-                                                                                        href={
-                                                                                            price.product_url
-                                                                                        }
-                                                                                        target="_blank"
-                                                                                        rel="noopener noreferrer"
-                                                                                        className="buy-button"
-                                                                                    >
-                                                                                        Buy Now
-                                                                                    </a>
-                                                                                ) : (
-                                                                                    <span className="unavailable-button">
-                                                                                        Link Unavailable
-                                                                                    </span>
-                                                                                )}
-
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                    )
-                                                                )}
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    )
-                                                )}
-
-                                            </article>
-
-                                        ))}
-
-                                    </div>
-
-                                </>
-                            )}
-
-                    </div>
-                </section>
-
-            </main>
-
-            {/* FOOTER */}
-            <footer className="footer">
-                <div className="container">
+            {/* Search area */}
+            <section className="hero">
+                <div className="hero-content">
+                    <h1>Find the Best Deal on Your Next Phone</h1>
 
                     <p>
-                        © 2026 Smart Khareedi. Compare prices and shop smarter.
+                        Compare smartphone prices and find the best
+                        deal for your budget.
                     </p>
 
-                </div>
-            </footer>
+                    <div className="search-box">
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(event) =>
+                                setSearch(event.target.value)
+                            }
+                            onKeyDown={handleKeyDown}
+                            placeholder="Search for a smartphone..."
+                            aria-label="Search smartphones"
+                        />
 
+                        <button
+                            type="button"
+                            onClick={() => handleSearch()}
+                            disabled={loading}
+                        >
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Products */}
+            <main className="results-section">
+                <div className="container">
+                    <div className="results-header">
+                        <h2>
+                            {searched
+                                ? "Search Results"
+                                : "All Smartphones"}
+                        </h2>
+
+                        <p>
+                            {searched
+                                ? `Showing results for "${search}"`
+                                : `${products.length} smartphones found`}
+                        </p>
+
+                        {searched && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setSearch("");
+                                    setSearched(false);
+                                    loadAllProducts();
+                                }}
+                                style={{
+                                    marginTop: "12px",
+                                    padding: "9px 16px",
+                                    border: "none",
+                                    borderRadius: "7px",
+                                    background: "#2563eb",
+                                    color: "white",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Show All Phones
+                            </button>
+                        )}
+                    </div>
+
+                    {loading && (
+                        <div className="status-message">
+                            Loading smartphones...
+                        </div>
+                    )}
+
+                    {!loading && error && (
+                        <div className="status-message error-message">
+                            <p>{error}</p>
+
+                            <button
+                                className="retry-button"
+                                type="button"
+                                onClick={() => {
+                                    if (searched && search.trim()) {
+                                        handleSearch();
+                                    } else {
+                                        loadAllProducts();
+                                    }
+                                }}
+                            >
+                                Try Again
+                            </button>
+                        </div>
+                    )}
+
+                    {!loading &&
+                        !error &&
+                        products.length === 0 && (
+                            <div className="status-message">
+                                No smartphones found. Try another
+                                search.
+                            </div>
+                        )}
+
+                    {!loading && products.length > 0 && (
+                        <div className="products-container">
+                            {products.map((product, index) => {
+                                const productName =
+                                    getProductName(product);
+
+                                const retailers =
+                                    getRetailers(product);
+
+                                const imageUrl =
+                                    getImageUrl(product);
+
+                                const prices = retailers
+                                    .map((retailer) =>
+                                        Number(
+                                            getRetailerPrice(retailer)
+                                        )
+                                    )
+                                    .filter(
+                                        (price) =>
+                                            Number.isFinite(price) &&
+                                            price > 0
+                                    );
+
+                                const lowestPrice =
+                                    prices.length > 0
+                                        ? Math.min(...prices)
+                                        : null;
+
+                                return (
+                                    <article
+                                        className="product-card"
+                                        key={
+                                            product.product_id ||
+                                            product.id ||
+                                            `${productName}-${index}`
+                                        }
+                                    >
+                                        {/* Phone image and details */}
+                                        <div className="product-info">
+                                            <div className="product-image">
+                                                {imageUrl && (
+                                                    <img
+                                                        src={imageUrl}
+                                                        alt={productName}
+                                                        loading="lazy"
+                                                        onError={(event) => {
+                                                            const img =
+                                                                event.currentTarget;
+
+                                                            img.onerror = null;
+                                                            img.style.display =
+                                                                "none";
+
+                                                            const fallback =
+                                                                img.parentElement.querySelector(
+                                                                    ".image-fallback"
+                                                                );
+
+                                                            if (fallback) {
+                                                                fallback.style.display =
+                                                                    "flex";
+                                                            }
+                                                        }}
+                                                    />
+                                                )}
+
+                                                <div
+                                                    className="image-fallback"
+                                                    style={{
+                                                        display: imageUrl
+                                                            ? "none"
+                                                            : "flex"
+                                                    }}
+                                                >
+                                                    <span>📱</span>
+                                                    <strong>
+                                                        {productName}
+                                                    </strong>
+                                                    <small>
+                                                        Image unavailable
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div className="product-details">
+                                                {product.brand && (
+                                                    <span className="brand">
+                                                        {product.brand}
+                                                    </span>
+                                                )}
+
+                                                <h3>{productName}</h3>
+
+                                                {product.description && (
+                                                    <p>
+                                                        {product.description}
+                                                    </p>
+                                                )}
+
+                                                {lowestPrice !== null && (
+                                                    <p>
+                                                        <strong>
+                                                            Lowest Price:{" "}
+                                                        </strong>
+                                                        {formatPrice(
+                                                            lowestPrice
+                                                        )}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Retailer prices — storage variants removed */}
+                                        <div className="variant-section">
+                                            <div className="variant-title">
+                                                <span>
+                                                    Compare Retailers
+                                                </span>
+                                            </div>
+
+                                            <div className="price-list">
+                                                {retailers.length > 0 ? (
+                                                    retailers.map(
+                                                        (
+                                                            retailer,
+                                                            retailerIndex
+                                                        ) => {
+                                                            const price =
+                                                                getRetailerPrice(
+                                                                    retailer
+                                                                );
+
+                                                            const numericPrice =
+                                                                Number(price);
+
+                                                            const isLowest =
+                                                                lowestPrice !==
+                                                                    null &&
+                                                                Number.isFinite(
+                                                                    numericPrice
+                                                                ) &&
+                                                                numericPrice ===
+                                                                    lowestPrice;
+
+                                                            const retailerLink =
+                                                                getRetailerLink(
+                                                                    retailer
+                                                                );
+
+                                                            return (
+                                                                <div
+                                                                    className={`price-row ${
+                                                                        isLowest
+                                                                            ? "lowest"
+                                                                            : ""
+                                                                    }`}
+                                                                    key={
+                                                                        retailer.retailer_id ||
+                                                                        retailer.id ||
+                                                                        retailerIndex
+                                                                    }
+                                                                >
+                                                                    <div className="platform-info">
+                                                                        <strong>
+                                                                            {getRetailerName(
+                                                                                retailer
+                                                                            )}
+                                                                        </strong>
+
+                                                                        {isLowest && (
+                                                                            <span className="lowest-badge">
+                                                                                LOWEST PRICE
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+
+                                                                    <div className="price-info">
+                                                                        <span className="price">
+                                                                            {formatPrice(
+                                                                                price
+                                                                            )}
+                                                                        </span>
+
+                                                                        {retailerLink ? (
+                                                                            <a
+                                                                                className="buy-button"
+                                                                                href={
+                                                                                    retailerLink
+                                                                                }
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                            >
+                                                                                Buy Now
+                                                                            </a>
+                                                                        ) : (
+                                                                            <span className="unavailable-button">
+                                                                                Link unavailable
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        }
+                                                    )
+                                                ) : (
+                                                    <p>
+                                                        No retailer prices
+                                                        available for this
+                                                        product.
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </article>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            </main>
+
+            {/* Footer */}
+            <footer className="footer">
+                <p>
+                    © {new Date().getFullYear()} Smart Khareedi.
+                    Compare prices. Shop smarter.
+                </p>
+            </footer>
         </div>
     );
 }
 
 export default App;
+

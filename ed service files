@@ -1,0 +1,31 @@
+[1mdiff --git a/Start Smart Khareedi.bat b/Start Smart Khareedi.bat[m
+[1mindex 32c4409..e30aac5 100644[m
+[1m--- a/Start Smart Khareedi.bat[m	
+[1m+++ b/Start Smart Khareedi.bat[m	
+[36m@@ -3,11 +3,11 @@[m [mtitle Smart Khareedi[m
+ [m
+ echo Starting Smart Khareedi...[m
+ [m
+[31m-start "Smart Khareedi Backend" cmd /k "cd /d E:\Smart_Kharedii\backend && node server.js"[m
+[32m+[m[32mstart "Smart Khareedi Backend" cmd /k "cd /d C:\Users\Parth\Desktop\smart-khareedi>"[m
+ [m
+ timeout /t 3 /nobreak >nul[m
+ [m
+[31m-start "Smart Khareedi Frontend" cmd /k "cd /d E:\Smart_Kharedii\frontend && npm run dev"[m
+[32m+[m[32mstart "Smart Khareedi Frontend" cmd /k "cd /d C:\Users\Parth\Desktop\smart-khareedi>"[m
+ [m
+ timeout /t 5 /nobreak >nul[m
+ [m
+[1mdiff --git a/backend/db.js b/backend/db.js[m
+[1mindex 7dd82dc..2027c99 100644[m
+[1m--- a/backend/db.js[m
+[1m+++ b/backend/db.js[m
+[36m@@ -3,7 +3,7 @@[m [mconst mysql = require("mysql2");[m
+ const db = mysql.createConnection({[m
+     host: "localhost",[m
+     user: "root",[m
+[31m-    password: "samarth",[m
+[32m+[m[32m    password: "root",[m
+     database: "smart_khareedi"[m
+ });[m
+ [m

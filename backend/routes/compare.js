@@ -135,12 +135,17 @@ router.get("/compare", async (req, res) => {
             product.variants = Object.values(product.variants);
 
             for (const variant of product.variants) {
-                const availablePrices = variant.prices.filter(
-                    (item) =>
-                        item.availability !== "Out of Stock" &&
-                        Number.isFinite(item.price) &&
-                        item.price > 0
-                );
+                const availablePrices = variant.prices.filter((item) => {
+    const status = String(item.availability || "Available")
+        .trim()
+        .toLowerCase();
+
+    return (
+        status === "available" &&
+        Number.isFinite(item.price) &&
+        item.price > 0
+    );
+});
 
                 const lowestPrice = availablePrices.length
                     ? Math.min(...availablePrices.map((item) => item.price))

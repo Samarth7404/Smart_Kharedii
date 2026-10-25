@@ -731,3 +731,781 @@ footer p {
     }
 }
 
+
+/* ==========================================
+   SMART KHAREEDI - PREMIUM DESIGN UPGRADE
+   ========================================== */
+
+/* Smooth scrolling and consistent transitions */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: #172033;
+    background-color: #f1f5f9;
+    background-attachment: fixed;
+}
+
+::selection {
+    background: #bfdbfe;
+    color: #1e3a8a;
+}
+
+/* Header upgrade */
+.header {
+    background: linear-gradient(120deg, #0f172a, #1d4ed8);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 30px;
+    letter-spacing: -0.7px;
+}
+
+.logo span {
+    color: #93c5fd;
+}
+
+.tagline,
+.header-tagline {
+    color: #dbeafe;
+}
+
+/* Hero section */
+.hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #3b82f6 100%);
+    padding-top: 75px;
+    padding-bottom: 85px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero h1 {
+    letter-spacing: -1.2px;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
+}
+
+.hero p {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #dbeafe;
+}
+
+/* Search bar */
+.search-box {
+    max-width: 780px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.search-box:focus-within {
+    box-shadow: 0 0 0 4px rgba(191, 219, 254, 0.35),
+                0 16px 40px rgba(15, 23, 42, 0.25);
+}
+
+.search-box input {
+    background: #ffffff;
+}
+
+.search-box button {
+    background: #2563eb;
+    border-radius: 11px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.search-box button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* Results heading */
+.results-header h2 {
+    color: #0f172a;
+    font-size: 29px;
+    letter-spacing: -0.6px;
+}
+
+.results-header p {
+    line-height: 1.7;
+}
+
+/* Product cards */
+.products-container {
+    gap: 28px;
+}
+
+.product-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.045);
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    border-color: #bfdbfe;
+    box-shadow: 0 16px 36px rgba(30, 64, 175, 0.10);
+}
+
+/* Product images */
+.product-image {
+    background: linear-gradient(145deg, #f8fafc, #eff6ff);
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.product-image img {
+    transition: transform 0.35s ease;
+}
+
+.product-image img:hover {
+    transform: scale(1.08);
+}
+
+/* Product information */
+.brand {
+    color: #2563eb;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.product-details h3 {
+    color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+.product-details p {
+    color: #64748b;
+}
+
+/* Price comparison section */
+.variant-title {
+    border-bottom-color: #e2e8f0;
+}
+
+.price-row {
+    border-bottom-color: #f1f5f9;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.price-row:hover {
+    background: #f8fafc;
+}
+
+/* Price */
+.price {
+    color: #0f172a;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Lowest price highlight */
+.lowest {
+    background: linear-gradient(100deg, #ecfdf5, #f0fdf4);
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.lowest:hover {
+    background: #dcfce7;
+}
+
+.lowest .price {
+    color: #15803d;
+}
+
+.lowest-badge {
+    background: #15803d;
+    padding: 6px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+}
+
+/* Buy buttons */
+.buy-button {
+    background: #1d4ed8;
+    border-radius: 10px;
+    min-height: 42px;
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.12);
+    transition: background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.buy-button:hover {
+    background: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.22);
+}
+
+.unavailable-button {
+    border-radius: 10px;
+}
+
+/* Status and error messages */
+.status-message {
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+}
+
+.retry-button {
+    border-radius: 10px;
+    padding: 12px 24px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.retry-button:hover {
+    transform: translateY(-1px);
+}
+
+/* Footer */
+.footer,
+footer {
+    background: linear-gradient(120deg, #0f172a, #1e3a8a);
+    color: #cbd5e1;
+    padding: 28px 20px;
+}
+
+/* Keyboard accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px) {
+    .hero {
+        padding-top: 60px;
+        padding-bottom: 65px;
+    }
+
+    .product-card {
+        border-radius: 17px;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        padding-top: 48px;
+        padding-bottom: 52px;
+    }
+
+    .hero h1 {
+        letter-spacing: -0.6px;
+    }
+
+    .product-card {
+        padding: 16px;
+    }
+
+    .product-card:hover {
+        transform: none;
+    }
+
+    .product-image {
+        border-radius: 14px;
+    }
+
+    .results-header h2 {
+        font-size: 24px;
+    }
+
+    .buy-button {
+        box-shadow: none;
+    }
+}
+
+
+
+
+/* ==========================================
+   SMART KHAREEDI - VISUAL POLISH
+   CSS ONLY
+   ========================================== */
+
+/* Better text rendering */
+body {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Cleaner page spacing */
+.results-section {
+    padding-top: 45px;
+    padding-bottom: 70px;
+}
+
+/* Stylish product cards */
+.product-card {
+    position: relative;
+    isolation: isolate;
+}
+
+.product-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #2563eb, #60a5fa, #93c5fd);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+/* Product image area */
+.product-image {
+    min-height: 225px;
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.product-card:hover .product-image {
+    background: linear-gradient(145deg, #eff6ff, #f8fafc);
+    border-color: #dbeafe;
+}
+
+/* Brand label */
+.brand {
+    display: inline-block;
+    padding: 5px 10px;
+    background: #eff6ff;
+    border-radius: 6px;
+}
+
+/* Product name */
+.product-details h3 {
+    transition: color 0.2s ease;
+}
+
+.product-card:hover .product-details h3 {
+    color: #1d4ed8;
+}
+
+/* Improved price rows */
+.price-row {
+    position: relative;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.price-row:not(.lowest):hover {
+    background: #f8fafc;
+}
+
+/* Highlight the best deal */
+.lowest {
+    box-shadow: 0 3px 10px rgba(22, 163, 74, 0.05);
+}
+
+.lowest .price {
+    font-size: 22px;
+}
+
+/* Button interaction */
+.buy-button:active,
+.search-box button:active,
+.retry-button:active {
+    transform: scale(0.97);
+}
+
+/* Search input interaction */
+.search-box input:focus {
+    background: #f8fbff;
+}
+
+/* Improved footer typography */
+.footer,
+footer {
+    letter-spacing: 0.15px;
+}
+
+/* Tablet improvements */
+@media (min-width: 801px) {
+    .product-info {
+        gap: 32px;
+    }
+
+    .product-image {
+        width: 220px;
+        height: 235px;
+    }
+}
+
+/* Mobile improvements */
+@media (max-width: 600px) {
+    .results-section {
+        padding-top: 30px;
+        padding-bottom: 45px;
+    }
+
+    .product-card::before {
+        height: 3px;
+    }
+
+    .product-image {
+        min-height: 200px;
+    }
+
+    .lowest .price {
+        font-size: 20px;
+    }
+
+    .price-row {
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+}
+
+
+/* ==========================================
+   SMART KHAREEDI - PREMIUM PAGE BACKGROUND
+   ========================================== */
+
+body {
+    background-color: #f5f8ff;
+    background-image:
+        radial-gradient(ellipse at 10% 10%, rgba(96, 165, 250, 0.14), transparent 35%),
+        radial-gradient(ellipse at 90% 35%, rgba(147, 197, 253, 0.16), transparent 38%),
+        linear-gradient(180deg, #f8fbff 0%, #edf4ff 50%, #f8fafc 100%);
+    background-size: auto, auto, auto;
+    background-attachment: fixed;
+}
+
+/* Give the product section a clean appearance */
+.results-section {
+    background: transparent;
+}
+
+/* Make product cards stand out against the new background */
+.product-card {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(203, 213, 225, 0.75);
+    box-shadow: 0 8px 28px rgba(30, 64, 175, 0.06);
+}
+
+.product-card:hover {
+    box-shadow: 0 16px 38px rgba(30, 64, 175, 0.12);
+}
+
+/* Soft background for the phone image area */
+.product-image {
+    background: linear-gradient(145deg, #ffffff, #eff6ff);
+    border-color: #e2e8f0;
+}
+
+/* Cleaner section heading */
+.results-header h2 {
+    color: #172554;
+}
+
+.results-header p {
+    color: #64748b;
+}
+
+/* Mobile background */
+@media (max-width: 600px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .product-card {
+        background: #ffffff;
+    }
+}
+
+
+/* ==========================================
+   SMART KHAREEDI - CREATIVE TECH BACKGROUND
+   ========================================== */
+
+body {
+    position: relative;
+    background-color: #eef5ff;
+    background-image:
+        radial-gradient(ellipse at 5% 15%, rgba(59, 130, 246, 0.15), transparent 28%),
+        radial-gradient(ellipse at 95% 45%, rgba(14, 165, 233, 0.13), transparent 30%),
+        radial-gradient(ellipse at 45% 90%, rgba(99, 102, 241, 0.10), transparent 35%),
+        linear-gradient(135deg, #f8fbff 0%, #edf5ff 45%, #f4f7ff 100%);
+    background-attachment: fixed;
+}
+
+/* Subtle smartphone-inspired pattern */
+.app {
+    position: relative;
+    isolation: isolate;
+}
+
+.app::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.32;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='260' viewBox='0 0 240 260' fill='none'%3E%3Cg stroke='%233b82f6' stroke-width='1.5' opacity='.28'%3E%3Crect x='25' y='30' width='36' height='68' rx='7' transform='rotate(-12 25 30)'/%3E%3Cpath d='M38 37l17 -4'/%3E%3Ccircle cx='43' cy='88' r='2'/%3E%3Crect x='169' y='135' width='35' height='65' rx='7' transform='rotate(12 169 135)'/%3E%3Cpath d='M183 141l16 3'/%3E%3Ccircle cx='190' cy='191' r='2'/%3E%3Ccircle cx='164' cy='44' r='17'/%3E%3Cpath d='M155 44h18M164 35v18'/%3E%3Cpath d='M63 191h30m-15 -15v30'/%3E%3Ccircle cx='76' cy='191' r='22'/%3E%3Cpath d='M120 105l7 7 14 -16' stroke-width='2'/%3E%3Cpath d='M130 225l4 4 9 -10' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 240px 260px;
+}
+
+/* Keep product cards crisp and readable */
+.product-card {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(191, 219, 254, 0.8);
+    box-shadow: 0 8px 30px rgba(30, 64, 175, 0.07);
+    backdrop-filter: blur(6px);
+}
+
+.product-card:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 16px 40px rgba(37, 99, 235, 0.13);
+}
+
+/* Soft blue phone display area */
+.product-image {
+    background: linear-gradient(145deg, #ffffff, #eaf3ff);
+    border-color: #dbeafe;
+}
+
+/* Tech-inspired section heading */
+.results-header h2 {
+    color: #142b55;
+}
+
+.results-header p {
+    color: #64748b;
+}
+
+/* Give the price comparison area a clean surface */
+.variant-section {
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 12px;
+}
+
+/* Keep the background lightweight on mobile */
+@media (max-width: 600px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .app::before {
+        opacity: 0.18;
+        background-size: 200px 220px;
+    }
+
+    .product-card {
+        background: #ffffff;
+        backdrop-filter: none;
+    }
+}
+
+
+/* ==========================================
+   SMART KHAREEDI - CREATIVE TECH BACKGROUND
+   ========================================== */
+
+body {
+    position: relative;
+    background-color: #eef5ff;
+    background-image:
+        radial-gradient(ellipse at 5% 15%, rgba(59, 130, 246, 0.15), transparent 28%),
+        radial-gradient(ellipse at 95% 45%, rgba(14, 165, 233, 0.13), transparent 30%),
+        radial-gradient(ellipse at 45% 90%, rgba(99, 102, 241, 0.10), transparent 35%),
+        linear-gradient(135deg, #f8fbff 0%, #edf5ff 45%, #f4f7ff 100%);
+    background-attachment: fixed;
+}
+
+/* Subtle smartphone-inspired pattern */
+.app {
+    position: relative;
+    isolation: isolate;
+}
+
+.app::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.32;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='260' viewBox='0 0 240 260' fill='none'%3E%3Cg stroke='%233b82f6' stroke-width='1.5' opacity='.28'%3E%3Crect x='25' y='30' width='36' height='68' rx='7' transform='rotate(-12 25 30)'/%3E%3Cpath d='M38 37l17 -4'/%3E%3Ccircle cx='43' cy='88' r='2'/%3E%3Crect x='169' y='135' width='35' height='65' rx='7' transform='rotate(12 169 135)'/%3E%3Cpath d='M183 141l16 3'/%3E%3Ccircle cx='190' cy='191' r='2'/%3E%3Ccircle cx='164' cy='44' r='17'/%3E%3Cpath d='M155 44h18M164 35v18'/%3E%3Cpath d='M63 191h30m-15 -15v30'/%3E%3Ccircle cx='76' cy='191' r='22'/%3E%3Cpath d='M120 105l7 7 14 -16' stroke-width='2'/%3E%3Cpath d='M130 225l4 4 9 -10' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 240px 260px;
+}
+
+/* Keep product cards crisp and readable */
+.product-card {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(191, 219, 254, 0.8);
+    box-shadow: 0 8px 30px rgba(30, 64, 175, 0.07);
+    backdrop-filter: blur(6px);
+}
+
+.product-card:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 16px 40px rgba(37, 99, 235, 0.13);
+}
+
+/* Soft blue phone display area */
+.product-image {
+    background: linear-gradient(145deg, #ffffff, #eaf3ff);
+    border-color: #dbeafe;
+}
+
+/* Tech-inspired section heading */
+.results-header h2 {
+    color: #142b55;
+}
+
+.results-header p {
+    color: #64748b;
+}
+
+/* Give the price comparison area a clean surface */
+.variant-section {
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 12px;
+}
+
+/* Keep the background lightweight on mobile */
+@media (max-width: 600px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .app::before {
+        opacity: 0.18;
+        background-size: 200px 220px;
+    }
+
+    .product-card {
+        background: #ffffff;
+        backdrop-filter: none;
+    }
+}
+
+
+/* ==========================================
+   SMART KHAREEDI - GOLDEN SUNSHINE THEME
+   ========================================== */
+
+body {
+    background-color: #fff1a8;
+
+    background-image:
+        radial-gradient(
+            ellipse at 15% 10%,
+            rgba(255, 193, 7, 0.48),
+            transparent 35%
+        ),
+        radial-gradient(
+            ellipse at 90% 35%,
+            rgba(255, 152, 0, 0.22),
+            transparent 35%
+        ),
+        radial-gradient(
+            ellipse at 50% 100%,
+            rgba(255, 213, 79, 0.35),
+            transparent 40%
+        ),
+        linear-gradient(
+            135deg,
+            #fff9c4 0%,
+            #ffec80 45%,
+            #fff3c4 100%
+        );
+
+    background-attachment: fixed;
+}
+
+/* Warm golden smartphone pattern */
+.app::before {
+    opacity: 0.32;
+}
+
+/* White product cards for contrast */
+.product-card {
+    background: rgba(255, 255, 255, 0.97);
+    border-color: #f5df91;
+    box-shadow: 0 8px 28px rgba(146, 90, 0, 0.08);
+}
+
+.product-card:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 16px 38px rgba(180, 110, 0, 0.15);
+}
+
+/* Sunny phone image area */
+.product-image {
+    background: linear-gradient(
+        145deg,
+        #ffffff,
+        #fff8db
+    );
+    border-color: #f5e7b2;
+}
+
+/* Golden accent on hover */
+.product-card::before {
+    background: linear-gradient(
+        90deg,
+        #f59e0b,
+        #facc15,
+        #fb923c
+    );
+}
+
+.product-card:hover .product-details h3 {
+    color: #b45309;
+}
+
+/* Bright golden brand labels */
+.brand {
+    color: #92400e;
+    background: #fef3c7;
+}
+
+/* Mobile background */
+@media (max-width: 600px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .product-card {
+        background: #ffffff;
+    }
+}
+

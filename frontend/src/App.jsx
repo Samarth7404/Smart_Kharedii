@@ -8,22 +8,37 @@ function App() {
     const [searched, setSearched] = useState(false);
     const [error, setError] = useState("");
 
-    const getPhoneImage = (productName = "") => {
-        const name = productName.toLowerCase();
+    
+const getPhoneImage = (productName = "") => {
+    const name = productName.toLowerCase();
 
-        if (name.includes("samsung galaxy s25 ultra")) return "/images/samsung-galaxy-s25-ultra.jpg";
-        if (name.includes("samsung galaxy s25")) return "/images/samsung-galaxy-s25.jpg";
-        if (name.includes("iphone 17")) return "/images/iphone-17.jpg";
-        if (name.includes("iphone 16")) return "/images/iphone-16.jpg";
-        if (name.includes("oneplus 13r")) return "/images/oneplus-13r.jpg";
-        if (name.includes("oneplus 13")) return "/images/oneplus-13.jpg";
-        if (name.includes("google pixel 9") || name.includes("pixel 9")) return "/images/google-pixel-9.jpg";
-        if (name.includes("xiaomi 15")) return "/images/xiaomi-15.jpg";
-        if (name.includes("vivo x200")) return "/images/vivo-x200.jpg";
-        if (name.includes("nothing phone 3")) return "/images/nothing-phone-3.jpg";
+    if (name.includes("samsung galaxy s26 ultra")) return "/images/samsung-s26-ultra.jpg";
+    if (name.includes("iphone 18 pro max")) return "/images/iphone-18-pro-max.jpg";
+    if (name.includes("iphone 18 pro")) return "/images/iphone-18-pro.jpg";
+    if (name.includes("samsung galaxy s26")) return "/images/samsung-s26.jpg";
+    if (name.includes("oneplus 15")) return "/images/oneplus-15.jpg";
+    if (name.includes("google pixel 11 pro") || name.includes("pixel 11 pro")) return "/images/google-pixel-11-pro.jpg";
+    if (name.includes("oppo find x9 ultra")) return "/images/oppo-find-x9-ultra.jpg";
+    if (name.includes("xiaomi 17t")) return "/images/xiaomi-17t.jpg";
+    if (name.includes("nothing phone 4a pro") || name.includes("nothing phone (4a) pro")) return "/images/nothing-phone-4a-pro.jpg";
+    if (name.includes("samsung galaxy z fold8 ultra")) return "/images/samsung-galaxy-z-fold8-ultra.jpg";
+    if (name.includes("vivo x300 fe")) return "/images/vivo-x300-fe.jpg";
 
-        return "";
-    };
+    if (name.includes("samsung galaxy s25 ultra")) return "/images/samsung-galaxy-s25-ultra.jpg";
+    if (name.includes("samsung galaxy s25")) return "/images/samsung-galaxy-s25.jpg";
+    if (name.includes("iphone 17")) return "/images/iphone-17.jpg";
+    if (name.includes("iphone 16")) return "/images/iphone-16.jpg";
+    if (name.includes("oneplus 13r")) return "/images/oneplus-13r.jpg";
+    if (name.includes("oneplus 13")) return "/images/oneplus-13.jpg";
+    if (name.includes("google pixel 9") || name.includes("pixel 9")) return "/images/google-pixel-9.jpg";
+    if (name.includes("xiaomi 15")) return "/images/xiaomi-15.jpg";
+    if (name.includes("vivo x200")) return "/images/vivo-x200.jpg";
+    if (name.includes("nothing phone 3")) return "/images/nothing-phone-3.jpg";
+
+    return "";
+};
+
+
 
     const getImageUrl = (product) => {
         return (
